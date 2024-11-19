@@ -2,9 +2,17 @@ import { list } from '@keystone-6/core';
 import { allowAll } from '@keystone-6/core/access';
 import { relationship, text } from '@keystone-6/core/fields';
 import { type Lists } from '.keystone/types';
+import { allowReadOnly, isAdmin, Session } from '../Access';
 
-export const Country: Lists.Country = list({
-  access: allowAll,
+export const Country: Lists.Country<Session> = list({
+  access(args) {
+    return allowReadOnly(args.session, args.operation);
+  },
+  ui: {
+    isHidden(args) {
+      return !isAdmin(args.session);
+    },
+  },
   fields: {
     name: text({ validation: { isRequired: true } }),
     code: text({
@@ -19,7 +27,7 @@ export const Country: Lists.Country = list({
   },
 });
 
-export const State: Lists.State = list({
+export const State: Lists.State<Session> = list({
   access: allowAll,
   fields: {
     name: text({ validation: { isRequired: true } }),
@@ -34,7 +42,7 @@ export const State: Lists.State = list({
   },
 });
 
-export const City: Lists.City = list({
+export const City: Lists.City<Session> = list({
   access: allowAll,
   fields: {
     name: text({ validation: { isRequired: true } }),
@@ -45,11 +53,12 @@ export const City: Lists.City = list({
     areas: relationship({
       ref: 'PostalCode',
       many: true,
+
     }),
   },
 });
 
-export const PostalCode: Lists.PostalCode = list({
+export const PostalCode: Lists.PostalCode<Session> = list({
   access: allowAll,
   fields: {
     code: text({

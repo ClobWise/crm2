@@ -5,8 +5,10 @@ type User {
   id: ID!
   firstName: String
   lastName: String
+  name: String
   email: String
   password: PasswordState
+  isAdmin: Boolean
   createdAt: DateTime
 }
 
@@ -29,6 +31,7 @@ input UserWhereInput {
   firstName: StringFilter
   lastName: StringFilter
   email: StringFilter
+  isAdmin: BooleanFilter
   createdAt: DateTimeNullableFilter
 }
 
@@ -71,6 +74,11 @@ input NestedStringFilter {
   not: NestedStringFilter
 }
 
+input BooleanFilter {
+  equals: Boolean
+  not: BooleanFilter
+}
+
 input DateTimeNullableFilter {
   equals: DateTime
   in: [DateTime!]
@@ -87,6 +95,7 @@ input UserOrderByInput {
   firstName: OrderDirection
   lastName: OrderDirection
   email: OrderDirection
+  isAdmin: OrderDirection
   createdAt: OrderDirection
 }
 
@@ -100,6 +109,7 @@ input UserUpdateInput {
   lastName: String
   email: String
   password: String
+  isAdmin: Boolean
   createdAt: DateTime
 }
 
@@ -113,6 +123,7 @@ input UserCreateInput {
   lastName: String
   email: String
   password: String
+  isAdmin: Boolean
   createdAt: DateTime
 }
 
