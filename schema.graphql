@@ -116,6 +116,366 @@ input UserCreateInput {
   createdAt: DateTime
 }
 
+type Country {
+  id: ID!
+  name: String
+  code: String
+  isdCode: String
+}
+
+input CountryWhereUniqueInput {
+  id: ID
+  code: String
+}
+
+input CountryWhereInput {
+  AND: [CountryWhereInput!]
+  OR: [CountryWhereInput!]
+  NOT: [CountryWhereInput!]
+  id: IDFilter
+  name: StringFilter
+  code: StringFilter
+  isdCode: StringFilter
+}
+
+input CountryOrderByInput {
+  id: OrderDirection
+  name: OrderDirection
+  code: OrderDirection
+  isdCode: OrderDirection
+}
+
+input CountryUpdateInput {
+  name: String
+  code: String
+  isdCode: String
+}
+
+input CountryUpdateArgs {
+  where: CountryWhereUniqueInput!
+  data: CountryUpdateInput!
+}
+
+input CountryCreateInput {
+  name: String
+  code: String
+  isdCode: String
+}
+
+type State {
+  id: ID!
+  name: String
+  code: String
+  country: Country
+}
+
+input StateWhereUniqueInput {
+  id: ID
+  code: String
+}
+
+input StateWhereInput {
+  AND: [StateWhereInput!]
+  OR: [StateWhereInput!]
+  NOT: [StateWhereInput!]
+  id: IDFilter
+  name: StringFilter
+  code: StringFilter
+  country: CountryWhereInput
+}
+
+input StateOrderByInput {
+  id: OrderDirection
+  name: OrderDirection
+  code: OrderDirection
+}
+
+input StateUpdateInput {
+  name: String
+  code: String
+  country: CountryRelateToOneForUpdateInput
+}
+
+input CountryRelateToOneForUpdateInput {
+  create: CountryCreateInput
+  connect: CountryWhereUniqueInput
+  disconnect: Boolean
+}
+
+input StateUpdateArgs {
+  where: StateWhereUniqueInput!
+  data: StateUpdateInput!
+}
+
+input StateCreateInput {
+  name: String
+  code: String
+  country: CountryRelateToOneForCreateInput
+}
+
+input CountryRelateToOneForCreateInput {
+  create: CountryCreateInput
+  connect: CountryWhereUniqueInput
+}
+
+type City {
+  id: ID!
+  name: String
+  state: State
+  areas(where: PostalCodeWhereInput! = {}, orderBy: [PostalCodeOrderByInput!]! = [], take: Int, skip: Int! = 0, cursor: PostalCodeWhereUniqueInput): [PostalCode!]
+  areasCount(where: PostalCodeWhereInput! = {}): Int
+}
+
+input CityWhereUniqueInput {
+  id: ID
+}
+
+input CityWhereInput {
+  AND: [CityWhereInput!]
+  OR: [CityWhereInput!]
+  NOT: [CityWhereInput!]
+  id: IDFilter
+  name: StringFilter
+  state: StateWhereInput
+  areas: PostalCodeManyRelationFilter
+}
+
+input PostalCodeManyRelationFilter {
+  every: PostalCodeWhereInput
+  some: PostalCodeWhereInput
+  none: PostalCodeWhereInput
+}
+
+input CityOrderByInput {
+  id: OrderDirection
+  name: OrderDirection
+}
+
+input CityUpdateInput {
+  name: String
+  state: StateRelateToOneForUpdateInput
+  areas: PostalCodeRelateToManyForUpdateInput
+}
+
+input StateRelateToOneForUpdateInput {
+  create: StateCreateInput
+  connect: StateWhereUniqueInput
+  disconnect: Boolean
+}
+
+input PostalCodeRelateToManyForUpdateInput {
+  disconnect: [PostalCodeWhereUniqueInput!]
+  set: [PostalCodeWhereUniqueInput!]
+  create: [PostalCodeCreateInput!]
+  connect: [PostalCodeWhereUniqueInput!]
+}
+
+input CityUpdateArgs {
+  where: CityWhereUniqueInput!
+  data: CityUpdateInput!
+}
+
+input CityCreateInput {
+  name: String
+  state: StateRelateToOneForCreateInput
+  areas: PostalCodeRelateToManyForCreateInput
+}
+
+input StateRelateToOneForCreateInput {
+  create: StateCreateInput
+  connect: StateWhereUniqueInput
+}
+
+input PostalCodeRelateToManyForCreateInput {
+  create: [PostalCodeCreateInput!]
+  connect: [PostalCodeWhereUniqueInput!]
+}
+
+type PostalCode {
+  id: ID!
+  code: String
+  city: City
+}
+
+input PostalCodeWhereUniqueInput {
+  id: ID
+  code: String
+}
+
+input PostalCodeWhereInput {
+  AND: [PostalCodeWhereInput!]
+  OR: [PostalCodeWhereInput!]
+  NOT: [PostalCodeWhereInput!]
+  id: IDFilter
+  code: StringFilter
+  city: CityWhereInput
+}
+
+input PostalCodeOrderByInput {
+  id: OrderDirection
+  code: OrderDirection
+}
+
+input PostalCodeUpdateInput {
+  code: String
+  city: CityRelateToOneForUpdateInput
+}
+
+input CityRelateToOneForUpdateInput {
+  create: CityCreateInput
+  connect: CityWhereUniqueInput
+  disconnect: Boolean
+}
+
+input PostalCodeUpdateArgs {
+  where: PostalCodeWhereUniqueInput!
+  data: PostalCodeUpdateInput!
+}
+
+input PostalCodeCreateInput {
+  code: String
+  city: CityRelateToOneForCreateInput
+}
+
+input CityRelateToOneForCreateInput {
+  create: CityCreateInput
+  connect: CityWhereUniqueInput
+}
+
+type Address {
+  id: ID!
+  house: String
+  street: String
+  landmark: String
+  postalCode: PostalCode
+}
+
+input AddressWhereUniqueInput {
+  id: ID
+}
+
+input AddressWhereInput {
+  AND: [AddressWhereInput!]
+  OR: [AddressWhereInput!]
+  NOT: [AddressWhereInput!]
+  id: IDFilter
+  house: StringFilter
+  street: StringFilter
+  landmark: StringFilter
+  postalCode: PostalCodeWhereInput
+}
+
+input AddressOrderByInput {
+  id: OrderDirection
+  house: OrderDirection
+  street: OrderDirection
+  landmark: OrderDirection
+}
+
+input AddressUpdateInput {
+  house: String
+  street: String
+  landmark: String
+  postalCode: PostalCodeRelateToOneForUpdateInput
+}
+
+input PostalCodeRelateToOneForUpdateInput {
+  create: PostalCodeCreateInput
+  connect: PostalCodeWhereUniqueInput
+  disconnect: Boolean
+}
+
+input AddressUpdateArgs {
+  where: AddressWhereUniqueInput!
+  data: AddressUpdateInput!
+}
+
+input AddressCreateInput {
+  house: String
+  street: String
+  landmark: String
+  postalCode: PostalCodeRelateToOneForCreateInput
+}
+
+input PostalCodeRelateToOneForCreateInput {
+  create: PostalCodeCreateInput
+  connect: PostalCodeWhereUniqueInput
+}
+
+type Email {
+  id: ID!
+  address: String
+}
+
+input EmailWhereUniqueInput {
+  id: ID
+}
+
+input EmailWhereInput {
+  AND: [EmailWhereInput!]
+  OR: [EmailWhereInput!]
+  NOT: [EmailWhereInput!]
+  id: IDFilter
+  address: StringFilter
+}
+
+input EmailOrderByInput {
+  id: OrderDirection
+  address: OrderDirection
+}
+
+input EmailUpdateInput {
+  address: String
+}
+
+input EmailUpdateArgs {
+  where: EmailWhereUniqueInput!
+  data: EmailUpdateInput!
+}
+
+input EmailCreateInput {
+  address: String
+}
+
+type Phone {
+  id: ID!
+  number: String
+  country: Country
+}
+
+input PhoneWhereUniqueInput {
+  id: ID
+}
+
+input PhoneWhereInput {
+  AND: [PhoneWhereInput!]
+  OR: [PhoneWhereInput!]
+  NOT: [PhoneWhereInput!]
+  id: IDFilter
+  number: StringFilter
+  country: CountryWhereInput
+}
+
+input PhoneOrderByInput {
+  id: OrderDirection
+  number: OrderDirection
+}
+
+input PhoneUpdateInput {
+  number: String
+  country: CountryRelateToOneForUpdateInput
+}
+
+input PhoneUpdateArgs {
+  where: PhoneWhereUniqueInput!
+  data: PhoneUpdateInput!
+}
+
+input PhoneCreateInput {
+  number: String
+  country: CountryRelateToOneForCreateInput
+}
+
 type Person {
   id: ID!
   firstName: String
@@ -201,6 +561,48 @@ type Mutation {
   updateUsers(data: [UserUpdateArgs!]!): [User]
   deleteUser(where: UserWhereUniqueInput!): User
   deleteUsers(where: [UserWhereUniqueInput!]!): [User]
+  createCountry(data: CountryCreateInput!): Country
+  createCountries(data: [CountryCreateInput!]!): [Country]
+  updateCountry(where: CountryWhereUniqueInput!, data: CountryUpdateInput!): Country
+  updateCountries(data: [CountryUpdateArgs!]!): [Country]
+  deleteCountry(where: CountryWhereUniqueInput!): Country
+  deleteCountries(where: [CountryWhereUniqueInput!]!): [Country]
+  createState(data: StateCreateInput!): State
+  createStates(data: [StateCreateInput!]!): [State]
+  updateState(where: StateWhereUniqueInput!, data: StateUpdateInput!): State
+  updateStates(data: [StateUpdateArgs!]!): [State]
+  deleteState(where: StateWhereUniqueInput!): State
+  deleteStates(where: [StateWhereUniqueInput!]!): [State]
+  createCity(data: CityCreateInput!): City
+  createCities(data: [CityCreateInput!]!): [City]
+  updateCity(where: CityWhereUniqueInput!, data: CityUpdateInput!): City
+  updateCities(data: [CityUpdateArgs!]!): [City]
+  deleteCity(where: CityWhereUniqueInput!): City
+  deleteCities(where: [CityWhereUniqueInput!]!): [City]
+  createPostalCode(data: PostalCodeCreateInput!): PostalCode
+  createPostalCodes(data: [PostalCodeCreateInput!]!): [PostalCode]
+  updatePostalCode(where: PostalCodeWhereUniqueInput!, data: PostalCodeUpdateInput!): PostalCode
+  updatePostalCodes(data: [PostalCodeUpdateArgs!]!): [PostalCode]
+  deletePostalCode(where: PostalCodeWhereUniqueInput!): PostalCode
+  deletePostalCodes(where: [PostalCodeWhereUniqueInput!]!): [PostalCode]
+  createAddress(data: AddressCreateInput!): Address
+  createAddresses(data: [AddressCreateInput!]!): [Address]
+  updateAddress(where: AddressWhereUniqueInput!, data: AddressUpdateInput!): Address
+  updateAddresses(data: [AddressUpdateArgs!]!): [Address]
+  deleteAddress(where: AddressWhereUniqueInput!): Address
+  deleteAddresses(where: [AddressWhereUniqueInput!]!): [Address]
+  createEmail(data: EmailCreateInput!): Email
+  createEmails(data: [EmailCreateInput!]!): [Email]
+  updateEmail(where: EmailWhereUniqueInput!, data: EmailUpdateInput!): Email
+  updateEmails(data: [EmailUpdateArgs!]!): [Email]
+  deleteEmail(where: EmailWhereUniqueInput!): Email
+  deleteEmails(where: [EmailWhereUniqueInput!]!): [Email]
+  createPhone(data: PhoneCreateInput!): Phone
+  createPhones(data: [PhoneCreateInput!]!): [Phone]
+  updatePhone(where: PhoneWhereUniqueInput!, data: PhoneUpdateInput!): Phone
+  updatePhones(data: [PhoneUpdateArgs!]!): [Phone]
+  deletePhone(where: PhoneWhereUniqueInput!): Phone
+  deletePhones(where: [PhoneWhereUniqueInput!]!): [Phone]
   createPerson(data: PersonCreateInput!): Person
   createPeople(data: [PersonCreateInput!]!): [Person]
   updatePerson(where: PersonWhereUniqueInput!, data: PersonUpdateInput!): Person
@@ -234,6 +636,27 @@ type Query {
   user(where: UserWhereUniqueInput!): User
   users(where: UserWhereInput! = {}, orderBy: [UserOrderByInput!]! = [], take: Int, skip: Int! = 0, cursor: UserWhereUniqueInput): [User!]
   usersCount(where: UserWhereInput! = {}): Int
+  country(where: CountryWhereUniqueInput!): Country
+  countries(where: CountryWhereInput! = {}, orderBy: [CountryOrderByInput!]! = [], take: Int, skip: Int! = 0, cursor: CountryWhereUniqueInput): [Country!]
+  countriesCount(where: CountryWhereInput! = {}): Int
+  state(where: StateWhereUniqueInput!): State
+  states(where: StateWhereInput! = {}, orderBy: [StateOrderByInput!]! = [], take: Int, skip: Int! = 0, cursor: StateWhereUniqueInput): [State!]
+  statesCount(where: StateWhereInput! = {}): Int
+  city(where: CityWhereUniqueInput!): City
+  cities(where: CityWhereInput! = {}, orderBy: [CityOrderByInput!]! = [], take: Int, skip: Int! = 0, cursor: CityWhereUniqueInput): [City!]
+  citiesCount(where: CityWhereInput! = {}): Int
+  postalCode(where: PostalCodeWhereUniqueInput!): PostalCode
+  postalCodes(where: PostalCodeWhereInput! = {}, orderBy: [PostalCodeOrderByInput!]! = [], take: Int, skip: Int! = 0, cursor: PostalCodeWhereUniqueInput): [PostalCode!]
+  postalCodesCount(where: PostalCodeWhereInput! = {}): Int
+  address(where: AddressWhereUniqueInput!): Address
+  addresses(where: AddressWhereInput! = {}, orderBy: [AddressOrderByInput!]! = [], take: Int, skip: Int! = 0, cursor: AddressWhereUniqueInput): [Address!]
+  addressesCount(where: AddressWhereInput! = {}): Int
+  email(where: EmailWhereUniqueInput!): Email
+  emails(where: EmailWhereInput! = {}, orderBy: [EmailOrderByInput!]! = [], take: Int, skip: Int! = 0, cursor: EmailWhereUniqueInput): [Email!]
+  emailsCount(where: EmailWhereInput! = {}): Int
+  phone(where: PhoneWhereUniqueInput!): Phone
+  phones(where: PhoneWhereInput! = {}, orderBy: [PhoneOrderByInput!]! = [], take: Int, skip: Int! = 0, cursor: PhoneWhereUniqueInput): [Phone!]
+  phonesCount(where: PhoneWhereInput! = {}): Int
   person(where: PersonWhereUniqueInput!): Person
   people(where: PersonWhereInput! = {}, orderBy: [PersonOrderByInput!]! = [], take: Int, skip: Int! = 0, cursor: PersonWhereUniqueInput): [Person!]
   peopleCount(where: PersonWhereInput! = {}): Int
