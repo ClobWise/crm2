@@ -132,6 +132,10 @@ type Country {
   name: String
   code: String
   isdCode: String
+  states(where: StateWhereInput! = {}, orderBy: [StateOrderByInput!]! = [], take: Int, skip: Int! = 0, cursor: StateWhereUniqueInput): [State!]
+  statesCount(where: StateWhereInput! = {}): Int
+  phones(where: PhoneWhereInput! = {}, orderBy: [PhoneOrderByInput!]! = [], take: Int, skip: Int! = 0, cursor: PhoneWhereUniqueInput): [Phone!]
+  phonesCount(where: PhoneWhereInput! = {}): Int
 }
 
 input CountryWhereUniqueInput {
@@ -147,6 +151,20 @@ input CountryWhereInput {
   name: StringFilter
   code: StringFilter
   isdCode: StringFilter
+  states: StateManyRelationFilter
+  phones: PhoneManyRelationFilter
+}
+
+input StateManyRelationFilter {
+  every: StateWhereInput
+  some: StateWhereInput
+  none: StateWhereInput
+}
+
+input PhoneManyRelationFilter {
+  every: PhoneWhereInput
+  some: PhoneWhereInput
+  none: PhoneWhereInput
 }
 
 input CountryOrderByInput {
@@ -160,6 +178,22 @@ input CountryUpdateInput {
   name: String
   code: String
   isdCode: String
+  states: StateRelateToManyForUpdateInput
+  phones: PhoneRelateToManyForUpdateInput
+}
+
+input StateRelateToManyForUpdateInput {
+  disconnect: [StateWhereUniqueInput!]
+  set: [StateWhereUniqueInput!]
+  create: [StateCreateInput!]
+  connect: [StateWhereUniqueInput!]
+}
+
+input PhoneRelateToManyForUpdateInput {
+  disconnect: [PhoneWhereUniqueInput!]
+  set: [PhoneWhereUniqueInput!]
+  create: [PhoneCreateInput!]
+  connect: [PhoneWhereUniqueInput!]
 }
 
 input CountryUpdateArgs {
@@ -171,6 +205,18 @@ input CountryCreateInput {
   name: String
   code: String
   isdCode: String
+  states: StateRelateToManyForCreateInput
+  phones: PhoneRelateToManyForCreateInput
+}
+
+input StateRelateToManyForCreateInput {
+  create: [StateCreateInput!]
+  connect: [StateWhereUniqueInput!]
+}
+
+input PhoneRelateToManyForCreateInput {
+  create: [PhoneCreateInput!]
+  connect: [PhoneWhereUniqueInput!]
 }
 
 type State {
@@ -178,6 +224,8 @@ type State {
   name: String
   code: String
   country: Country
+  cities(where: CityWhereInput! = {}, orderBy: [CityOrderByInput!]! = [], take: Int, skip: Int! = 0, cursor: CityWhereUniqueInput): [City!]
+  citiesCount(where: CityWhereInput! = {}): Int
 }
 
 input StateWhereUniqueInput {
@@ -193,6 +241,13 @@ input StateWhereInput {
   name: StringFilter
   code: StringFilter
   country: CountryWhereInput
+  cities: CityManyRelationFilter
+}
+
+input CityManyRelationFilter {
+  every: CityWhereInput
+  some: CityWhereInput
+  none: CityWhereInput
 }
 
 input StateOrderByInput {
@@ -205,12 +260,20 @@ input StateUpdateInput {
   name: String
   code: String
   country: CountryRelateToOneForUpdateInput
+  cities: CityRelateToManyForUpdateInput
 }
 
 input CountryRelateToOneForUpdateInput {
   create: CountryCreateInput
   connect: CountryWhereUniqueInput
   disconnect: Boolean
+}
+
+input CityRelateToManyForUpdateInput {
+  disconnect: [CityWhereUniqueInput!]
+  set: [CityWhereUniqueInput!]
+  create: [CityCreateInput!]
+  connect: [CityWhereUniqueInput!]
 }
 
 input StateUpdateArgs {
@@ -222,11 +285,17 @@ input StateCreateInput {
   name: String
   code: String
   country: CountryRelateToOneForCreateInput
+  cities: CityRelateToManyForCreateInput
 }
 
 input CountryRelateToOneForCreateInput {
   create: CountryCreateInput
   connect: CountryWhereUniqueInput
+}
+
+input CityRelateToManyForCreateInput {
+  create: [CityCreateInput!]
+  connect: [CityWhereUniqueInput!]
 }
 
 type City {
@@ -304,6 +373,8 @@ input PostalCodeRelateToManyForCreateInput {
 
 type PostalCode {
   id: ID!
+  name: String
+  area: String
   code: String
   city: City
 }
@@ -318,16 +389,19 @@ input PostalCodeWhereInput {
   OR: [PostalCodeWhereInput!]
   NOT: [PostalCodeWhereInput!]
   id: IDFilter
+  area: StringFilter
   code: StringFilter
   city: CityWhereInput
 }
 
 input PostalCodeOrderByInput {
   id: OrderDirection
+  area: OrderDirection
   code: OrderDirection
 }
 
 input PostalCodeUpdateInput {
+  area: String
   code: String
   city: CityRelateToOneForUpdateInput
 }
@@ -344,6 +418,7 @@ input PostalCodeUpdateArgs {
 }
 
 input PostalCodeCreateInput {
+  area: String
   code: String
   city: CityRelateToOneForCreateInput
 }
@@ -359,6 +434,7 @@ type Address {
   street: String
   landmark: String
   postalCode: PostalCode
+  person: Person
 }
 
 input AddressWhereUniqueInput {
@@ -374,6 +450,7 @@ input AddressWhereInput {
   street: StringFilter
   landmark: StringFilter
   postalCode: PostalCodeWhereInput
+  person: PersonWhereInput
 }
 
 input AddressOrderByInput {
@@ -388,11 +465,18 @@ input AddressUpdateInput {
   street: String
   landmark: String
   postalCode: PostalCodeRelateToOneForUpdateInput
+  person: PersonRelateToOneForUpdateInput
 }
 
 input PostalCodeRelateToOneForUpdateInput {
   create: PostalCodeCreateInput
   connect: PostalCodeWhereUniqueInput
+  disconnect: Boolean
+}
+
+input PersonRelateToOneForUpdateInput {
+  create: PersonCreateInput
+  connect: PersonWhereUniqueInput
   disconnect: Boolean
 }
 
@@ -406,6 +490,7 @@ input AddressCreateInput {
   street: String
   landmark: String
   postalCode: PostalCodeRelateToOneForCreateInput
+  person: PersonRelateToOneForCreateInput
 }
 
 input PostalCodeRelateToOneForCreateInput {
@@ -413,9 +498,16 @@ input PostalCodeRelateToOneForCreateInput {
   connect: PostalCodeWhereUniqueInput
 }
 
+input PersonRelateToOneForCreateInput {
+  create: PersonCreateInput
+  connect: PersonWhereUniqueInput
+}
+
 type Email {
   id: ID!
   address: String
+  person(where: PersonWhereInput! = {}, orderBy: [PersonOrderByInput!]! = [], take: Int, skip: Int! = 0, cursor: PersonWhereUniqueInput): [Person!]
+  personCount(where: PersonWhereInput! = {}): Int
 }
 
 input EmailWhereUniqueInput {
@@ -428,6 +520,13 @@ input EmailWhereInput {
   NOT: [EmailWhereInput!]
   id: IDFilter
   address: StringFilter
+  person: PersonManyRelationFilter
+}
+
+input PersonManyRelationFilter {
+  every: PersonWhereInput
+  some: PersonWhereInput
+  none: PersonWhereInput
 }
 
 input EmailOrderByInput {
@@ -437,6 +536,14 @@ input EmailOrderByInput {
 
 input EmailUpdateInput {
   address: String
+  person: PersonRelateToManyForUpdateInput
+}
+
+input PersonRelateToManyForUpdateInput {
+  disconnect: [PersonWhereUniqueInput!]
+  set: [PersonWhereUniqueInput!]
+  create: [PersonCreateInput!]
+  connect: [PersonWhereUniqueInput!]
 }
 
 input EmailUpdateArgs {
@@ -446,12 +553,20 @@ input EmailUpdateArgs {
 
 input EmailCreateInput {
   address: String
+  person: PersonRelateToManyForCreateInput
+}
+
+input PersonRelateToManyForCreateInput {
+  create: [PersonCreateInput!]
+  connect: [PersonWhereUniqueInput!]
 }
 
 type Phone {
   id: ID!
   number: String
   country: Country
+  person(where: PersonWhereInput! = {}, orderBy: [PersonOrderByInput!]! = [], take: Int, skip: Int! = 0, cursor: PersonWhereUniqueInput): [Person!]
+  personCount(where: PersonWhereInput! = {}): Int
 }
 
 input PhoneWhereUniqueInput {
@@ -465,16 +580,17 @@ input PhoneWhereInput {
   id: IDFilter
   number: StringFilter
   country: CountryWhereInput
+  person: PersonManyRelationFilter
 }
 
 input PhoneOrderByInput {
   id: OrderDirection
-  number: OrderDirection
 }
 
 input PhoneUpdateInput {
   number: String
   country: CountryRelateToOneForUpdateInput
+  person: PersonRelateToManyForUpdateInput
 }
 
 input PhoneUpdateArgs {
@@ -485,6 +601,7 @@ input PhoneUpdateArgs {
 input PhoneCreateInput {
   number: String
   country: CountryRelateToOneForCreateInput
+  person: PersonRelateToManyForCreateInput
 }
 
 type Person {
@@ -492,8 +609,15 @@ type Person {
   firstName: String
   middleName: String
   lastName: String
+  name: String
   dob: CalendarDay
   gender: String
+  phones(where: PhoneWhereInput! = {}, orderBy: [PhoneOrderByInput!]! = [], take: Int, skip: Int! = 0, cursor: PhoneWhereUniqueInput): [Phone!]
+  phonesCount(where: PhoneWhereInput! = {}): Int
+  emails(where: EmailWhereInput! = {}, orderBy: [EmailOrderByInput!]! = [], take: Int, skip: Int! = 0, cursor: EmailWhereUniqueInput): [Email!]
+  emailsCount(where: EmailWhereInput! = {}): Int
+  addresses(where: AddressWhereInput! = {}, orderBy: [AddressOrderByInput!]! = [], take: Int, skip: Int! = 0, cursor: AddressWhereUniqueInput): [Address!]
+  addressesCount(where: AddressWhereInput! = {}): Int
   createdAt: DateTime
 }
 
@@ -513,6 +637,9 @@ input PersonWhereInput {
   lastName: StringFilter
   dob: CalendarDayNullableFilter
   gender: StringFilter
+  phones: PhoneManyRelationFilter
+  emails: EmailManyRelationFilter
+  addresses: AddressManyRelationFilter
   createdAt: DateTimeNullableFilter
 }
 
@@ -525,6 +652,18 @@ input CalendarDayNullableFilter {
   gt: CalendarDay
   gte: CalendarDay
   not: CalendarDayNullableFilter
+}
+
+input EmailManyRelationFilter {
+  every: EmailWhereInput
+  some: EmailWhereInput
+  none: EmailWhereInput
+}
+
+input AddressManyRelationFilter {
+  every: AddressWhereInput
+  some: AddressWhereInput
+  none: AddressWhereInput
 }
 
 input PersonOrderByInput {
@@ -543,7 +682,24 @@ input PersonUpdateInput {
   lastName: String
   dob: CalendarDay
   gender: String
+  phones: PhoneRelateToManyForUpdateInput
+  emails: EmailRelateToManyForUpdateInput
+  addresses: AddressRelateToManyForUpdateInput
   createdAt: DateTime
+}
+
+input EmailRelateToManyForUpdateInput {
+  disconnect: [EmailWhereUniqueInput!]
+  set: [EmailWhereUniqueInput!]
+  create: [EmailCreateInput!]
+  connect: [EmailWhereUniqueInput!]
+}
+
+input AddressRelateToManyForUpdateInput {
+  disconnect: [AddressWhereUniqueInput!]
+  set: [AddressWhereUniqueInput!]
+  create: [AddressCreateInput!]
+  connect: [AddressWhereUniqueInput!]
 }
 
 input PersonUpdateArgs {
@@ -557,7 +713,20 @@ input PersonCreateInput {
   lastName: String
   dob: CalendarDay
   gender: String
+  phones: PhoneRelateToManyForCreateInput
+  emails: EmailRelateToManyForCreateInput
+  addresses: AddressRelateToManyForCreateInput
   createdAt: DateTime
+}
+
+input EmailRelateToManyForCreateInput {
+  create: [EmailCreateInput!]
+  connect: [EmailWhereUniqueInput!]
+}
+
+input AddressRelateToManyForCreateInput {
+  create: [AddressCreateInput!]
+  connect: [AddressWhereUniqueInput!]
 }
 
 """
@@ -641,6 +810,7 @@ input CreateInitialUserInput {
   lastName: String
   email: String
   password: String
+  isAdmin: Boolean
 }
 
 type Query {

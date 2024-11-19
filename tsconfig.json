@@ -6,6 +6,6 @@
     "noEmit": true,
     "esModuleInterop": true,
     "forceConsistentCasingInFileNames": true,
-    "verbatimModuleSyntax": false,
+    "verbatimModuleSyntax": false
   }
 }

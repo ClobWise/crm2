@@ -22,42 +22,41 @@ model User {
 }
 
 model Country {
-  id                 String  @id @default(cuid())
-  name               String  @default("")
-  code               String  @unique @default("")
-  isdCode            String  @default("")
-  from_State_country State[] @relation("State_country")
-  from_Phone_country Phone[] @relation("Phone_country")
+  id      String  @id @default(cuid())
+  name    String  @default("")
+  code    String  @unique @default("")
+  isdCode String  @default("")
+  states  State[] @relation("State_country")
+  phones  Phone[] @relation("Phone_country")
 }
 
 model State {
-  id              String   @id @default(cuid())
-  name            String   @default("")
-  code            String   @unique @default("")
-  country         Country? @relation("State_country", fields: [countryId], references: [id])
-  countryId       String?  @map("country")
-  from_City_state City[]   @relation("City_state")
+  id        String   @id @default(cuid())
+  name      String   @default("")
+  code      String   @unique @default("")
+  country   Country? @relation("State_country", fields: [countryId], references: [id])
+  countryId String?  @map("country")
+  cities    City[]   @relation("City_state")
 
   @@index([countryId])
 }
 
 model City {
-  id                   String       @id @default(cuid())
-  name                 String       @default("")
-  state                State?       @relation("City_state", fields: [stateId], references: [id])
-  stateId              String?      @map("state")
-  areas                PostalCode[] @relation("City_areas")
-  from_PostalCode_city PostalCode[] @relation("PostalCode_city")
+  id      String       @id @default(cuid())
+  name    String       @default("")
+  state   State?       @relation("City_state", fields: [stateId], references: [id])
+  stateId String?      @map("state")
+  areas   PostalCode[] @relation("PostalCode_city")
 
   @@index([stateId])
 }
 
 model PostalCode {
   id                      String    @id @default(cuid())
+  area                    String    @default("")
   code                    String    @unique @default("")
   city                    City?     @relation("PostalCode_city", fields: [cityId], references: [id])
   cityId                  String?   @map("city")
-  from_City_areas         City[]    @relation("City_areas")
   from_Address_postalCode Address[] @relation("Address_postalCode")
 
   @@index([cityId])
@@ -70,13 +69,17 @@ model Address {
   landmark     String      @default("")
   postalCode   PostalCode? @relation("Address_postalCode", fields: [postalCodeId], references: [id])
   postalCodeId String?     @map("postalCode")
+  person       Person?     @relation("Address_person", fields: [personId], references: [id])
+  personId     String?     @map("person")
 
   @@index([postalCodeId])
+  @@index([personId])
 }
 
 model Email {
-  id      String @id @default(cuid())
-  address String @default("")
+  id      String   @id @default(cuid())
+  address String   @default("")
+  person  Person[] @relation("Email_person")
 }
 
 model Phone {
@@ -84,6 +87,7 @@ model Phone {
   number    String   @default("")
   country   Country? @relation("Phone_country", fields: [countryId], references: [id])
   countryId String?  @map("country")
+  person    Person[] @relation("Person_phones")
 
   @@index([countryId])
 }
@@ -95,5 +99,8 @@ model Person {
   lastName   String    @default("")
   dob        String?
   gender     String    @default("")
+  phones     Phone[]   @relation("Person_phones")
+  emails     Email[]   @relation("Email_person")
+  addresses  Address[] @relation("Address_person")
   createdAt  DateTime? @default(now())
 }

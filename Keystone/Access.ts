@@ -11,7 +11,7 @@ export type Session = {
   listKey: 'User';
   itemId: string;
   data: SessionData;
-}
+};
 
 export function isAdmin(session?: Session) {
   return !!session?.data.isAdmin;
