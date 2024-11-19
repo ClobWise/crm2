@@ -3,7 +3,8 @@
   "version": "1.0.3",
   "private": true,
   "scripts": {
-    "dev": "keystone dev",
+    "dev": "dotenvx run -f .env.local -- keystone dev",
+    "dev:format": "prettier --write .",
     "start": "keystone start",
     "build": "keystone build"
   },
@@ -12,5 +13,14 @@
     "@keystone-6/core": "^6.0.0",
     "@keystone-6/fields-document": "^9.0.0",
     "typescript": "^5.5.0"
+  },
+  "volta": {
+    "node": "22.11.0"
+  },
+  "devDependencies": {
+    "@dotenvx/dotenvx": "^1.24.2",
+    "@trivago/prettier-plugin-sort-imports": "^4.3.0",
+    "prettier": "^3.3.3",
+    "tsx": "^4.19.2"
   }
 }
