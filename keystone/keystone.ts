@@ -1,7 +1,7 @@
 import { config } from '@keystone-6/core';
 
-import { session, withAuth } from './Keystone/Auth';
-import { lists } from './Keystone/Schema';
+import { session, withAuth } from './Auth';
+import { lists } from './Schema';
 
 export default withAuth(
   config({
@@ -15,7 +15,7 @@ export default withAuth(
     lists,
     session,
     server: {
-      port: 4000,
+      port: 4001,
     },
   })
 );

@@ -3,24 +3,38 @@
   "version": "1.0.3",
   "private": true,
   "scripts": {
-    "dev": "dotenvx run -f .env.local -- keystone dev",
+    "build:server": "tsc --build ./server/tsconfig.build.json",
+    "dev": "tsx ./script/dev.ts",
+    "dev:server": "dotenvx run -f .env.local -- tsx --watch ./server/Main.ts",
+    "dev:keystone": "cd keystone && dotenvx run -f ../.env.local -- keystone dev",
     "dev:format": "prettier --write .",
     "start": "keystone start",
     "build": "keystone build"
   },
   "dependencies": {
+    "@hono/node-server": "^1.13.7",
     "@keystone-6/auth": "^8.0.0",
     "@keystone-6/core": "^6.0.0",
     "@keystone-6/fields-document": "^9.0.0",
-    "typescript": "^5.5.0"
-  },
-  "volta": {
-    "node": "22.11.0"
+    "clsx": "^2.1.1",
+    "hono": "^4.6.12",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
+    "zod": "^3.23.8"
   },
   "devDependencies": {
     "@dotenvx/dotenvx": "^1.24.2",
+    "@rsbuild/core": "^1.1.5",
+    "@rsbuild/plugin-react": "^1.0.7",
     "@trivago/prettier-plugin-sort-imports": "^4.3.0",
+    "@types/react": "^18.3.12",
+    "@types/react-dom": "^18.3.1",
+    "concurrently": "^9.1.0",
     "prettier": "^3.3.3",
-    "tsx": "^4.19.2"
+    "tsx": "^4.19.2",
+    "typescript": "^5.7.2"
+  },
+  "volta": {
+    "node": "22.11.0"
   }
 }

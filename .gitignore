@@ -1,6 +1,9 @@
 node_modules
-.keystone/
-keystone.db
 *.log
+
+keystone.db
+.keystone/
+dist/
+
 .env
 .env.local
