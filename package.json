@@ -3,13 +3,15 @@
   "version": "1.0.3",
   "private": true,
   "scripts": {
+    "build": "npm run build:server && npm run build:keystone",
     "build:server": "tsc --build ./server/tsconfig.build.json",
+    "build:keystone": "cd keystone && keystone build",
     "dev": "tsx ./script/dev.ts",
     "dev:server": "dotenvx run -f .env.local -- tsx --watch ./server/Main.ts",
     "dev:keystone": "cd keystone && dotenvx run -f ../.env.local -- keystone dev",
     "dev:format": "prettier --write .",
-    "start": "keystone start",
-    "build": "keystone build"
+    "start:keystone": "cd keystone && keystone start",
+    "start:server": "node ./dist/server/Main.js"
   },
   "dependencies": {
     "@hono/node-server": "^1.13.7",
