@@ -1,4 +1,3 @@
-
 import type { NavigationProps } from '@keystone-6/core/admin-ui/components';
 
 export function Navigation(props: NavigationProps) {
@@ -6,8 +5,5 @@ export function Navigation(props: NavigationProps) {
 
   console.log(props);
 
-  return (
-    <div className='Navigation'>
-    </div>
-  );
+  return <div className='Navigation'></div>;
 }

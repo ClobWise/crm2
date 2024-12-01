@@ -57,7 +57,13 @@ input StringFilter {
   contains: String
   startsWith: String
   endsWith: String
+  mode: QueryMode
   not: NestedStringFilter
+}
+
+enum QueryMode {
+  default
+  insensitive
 }
 
 input NestedStringFilter {
@@ -435,6 +441,7 @@ type Address {
   landmark: String
   postalCode: PostalCode
   person: Person
+  organization: Organization
 }
 
 input AddressWhereUniqueInput {
@@ -451,6 +458,7 @@ input AddressWhereInput {
   landmark: StringFilter
   postalCode: PostalCodeWhereInput
   person: PersonWhereInput
+  organization: OrganizationWhereInput
 }
 
 input AddressOrderByInput {
@@ -466,6 +474,7 @@ input AddressUpdateInput {
   landmark: String
   postalCode: PostalCodeRelateToOneForUpdateInput
   person: PersonRelateToOneForUpdateInput
+  organization: OrganizationRelateToOneForUpdateInput
 }
 
 input PostalCodeRelateToOneForUpdateInput {
@@ -480,6 +489,12 @@ input PersonRelateToOneForUpdateInput {
   disconnect: Boolean
 }
 
+input OrganizationRelateToOneForUpdateInput {
+  create: OrganizationCreateInput
+  connect: OrganizationWhereUniqueInput
+  disconnect: Boolean
+}
+
 input AddressUpdateArgs {
   where: AddressWhereUniqueInput!
   data: AddressUpdateInput!
@@ -491,6 +506,7 @@ input AddressCreateInput {
   landmark: String
   postalCode: PostalCodeRelateToOneForCreateInput
   person: PersonRelateToOneForCreateInput
+  organization: OrganizationRelateToOneForCreateInput
 }
 
 input PostalCodeRelateToOneForCreateInput {
@@ -503,11 +519,18 @@ input PersonRelateToOneForCreateInput {
   connect: PersonWhereUniqueInput
 }
 
+input OrganizationRelateToOneForCreateInput {
+  create: OrganizationCreateInput
+  connect: OrganizationWhereUniqueInput
+}
+
 type Email {
   id: ID!
   address: String
   person(where: PersonWhereInput! = {}, orderBy: [PersonOrderByInput!]! = [], take: Int, skip: Int! = 0, cursor: PersonWhereUniqueInput): [Person!]
   personCount(where: PersonWhereInput! = {}): Int
+  organization(where: OrganizationWhereInput! = {}, orderBy: [OrganizationOrderByInput!]! = [], take: Int, skip: Int! = 0, cursor: OrganizationWhereUniqueInput): [Organization!]
+  organizationCount(where: OrganizationWhereInput! = {}): Int
 }
 
 input EmailWhereUniqueInput {
@@ -521,12 +544,19 @@ input EmailWhereInput {
   id: IDFilter
   address: StringFilter
   person: PersonManyRelationFilter
+  organization: OrganizationManyRelationFilter
 }
 
 input PersonManyRelationFilter {
   every: PersonWhereInput
   some: PersonWhereInput
   none: PersonWhereInput
+}
+
+input OrganizationManyRelationFilter {
+  every: OrganizationWhereInput
+  some: OrganizationWhereInput
+  none: OrganizationWhereInput
 }
 
 input EmailOrderByInput {
@@ -537,6 +567,7 @@ input EmailOrderByInput {
 input EmailUpdateInput {
   address: String
   person: PersonRelateToManyForUpdateInput
+  organization: OrganizationRelateToManyForUpdateInput
 }
 
 input PersonRelateToManyForUpdateInput {
@@ -544,6 +575,13 @@ input PersonRelateToManyForUpdateInput {
   set: [PersonWhereUniqueInput!]
   create: [PersonCreateInput!]
   connect: [PersonWhereUniqueInput!]
+}
+
+input OrganizationRelateToManyForUpdateInput {
+  disconnect: [OrganizationWhereUniqueInput!]
+  set: [OrganizationWhereUniqueInput!]
+  create: [OrganizationCreateInput!]
+  connect: [OrganizationWhereUniqueInput!]
 }
 
 input EmailUpdateArgs {
@@ -554,11 +592,17 @@ input EmailUpdateArgs {
 input EmailCreateInput {
   address: String
   person: PersonRelateToManyForCreateInput
+  organization: OrganizationRelateToManyForCreateInput
 }
 
 input PersonRelateToManyForCreateInput {
   create: [PersonCreateInput!]
   connect: [PersonWhereUniqueInput!]
+}
+
+input OrganizationRelateToManyForCreateInput {
+  create: [OrganizationCreateInput!]
+  connect: [OrganizationWhereUniqueInput!]
 }
 
 type Phone {
@@ -567,6 +611,8 @@ type Phone {
   country: Country
   person(where: PersonWhereInput! = {}, orderBy: [PersonOrderByInput!]! = [], take: Int, skip: Int! = 0, cursor: PersonWhereUniqueInput): [Person!]
   personCount(where: PersonWhereInput! = {}): Int
+  organization(where: OrganizationWhereInput! = {}, orderBy: [OrganizationOrderByInput!]! = [], take: Int, skip: Int! = 0, cursor: OrganizationWhereUniqueInput): [Organization!]
+  organizationCount(where: OrganizationWhereInput! = {}): Int
 }
 
 input PhoneWhereUniqueInput {
@@ -581,6 +627,7 @@ input PhoneWhereInput {
   number: StringFilter
   country: CountryWhereInput
   person: PersonManyRelationFilter
+  organization: OrganizationManyRelationFilter
 }
 
 input PhoneOrderByInput {
@@ -591,6 +638,7 @@ input PhoneUpdateInput {
   number: String
   country: CountryRelateToOneForUpdateInput
   person: PersonRelateToManyForUpdateInput
+  organization: OrganizationRelateToManyForUpdateInput
 }
 
 input PhoneUpdateArgs {
@@ -602,6 +650,7 @@ input PhoneCreateInput {
   number: String
   country: CountryRelateToOneForCreateInput
   person: PersonRelateToManyForCreateInput
+  organization: OrganizationRelateToManyForCreateInput
 }
 
 type Person {
@@ -729,6 +778,61 @@ input AddressRelateToManyForCreateInput {
   connect: [AddressWhereUniqueInput!]
 }
 
+type Organization {
+  id: ID!
+  name: String
+  phones(where: PhoneWhereInput! = {}, orderBy: [PhoneOrderByInput!]! = [], take: Int, skip: Int! = 0, cursor: PhoneWhereUniqueInput): [Phone!]
+  phonesCount(where: PhoneWhereInput! = {}): Int
+  emails(where: EmailWhereInput! = {}, orderBy: [EmailOrderByInput!]! = [], take: Int, skip: Int! = 0, cursor: EmailWhereUniqueInput): [Email!]
+  emailsCount(where: EmailWhereInput! = {}): Int
+  addresses(where: AddressWhereInput! = {}, orderBy: [AddressOrderByInput!]! = [], take: Int, skip: Int! = 0, cursor: AddressWhereUniqueInput): [Address!]
+  addressesCount(where: AddressWhereInput! = {}): Int
+  createdAt: DateTime
+}
+
+input OrganizationWhereUniqueInput {
+  id: ID
+}
+
+input OrganizationWhereInput {
+  AND: [OrganizationWhereInput!]
+  OR: [OrganizationWhereInput!]
+  NOT: [OrganizationWhereInput!]
+  id: IDFilter
+  name: StringFilter
+  phones: PhoneManyRelationFilter
+  emails: EmailManyRelationFilter
+  addresses: AddressManyRelationFilter
+  createdAt: DateTimeNullableFilter
+}
+
+input OrganizationOrderByInput {
+  id: OrderDirection
+  name: OrderDirection
+  createdAt: OrderDirection
+}
+
+input OrganizationUpdateInput {
+  name: String
+  phones: PhoneRelateToManyForUpdateInput
+  emails: EmailRelateToManyForUpdateInput
+  addresses: AddressRelateToManyForUpdateInput
+  createdAt: DateTime
+}
+
+input OrganizationUpdateArgs {
+  where: OrganizationWhereUniqueInput!
+  data: OrganizationUpdateInput!
+}
+
+input OrganizationCreateInput {
+  name: String
+  phones: PhoneRelateToManyForCreateInput
+  emails: EmailRelateToManyForCreateInput
+  addresses: AddressRelateToManyForCreateInput
+  createdAt: DateTime
+}
+
 """
 The `JSON` scalar type represents JSON values as specified by [ECMA-404](http://www.ecma-international.org/publications/files/ECMA-ST/ECMA-404.pdf).
 """
@@ -789,6 +893,12 @@ type Mutation {
   updatePeople(data: [PersonUpdateArgs!]!): [Person]
   deletePerson(where: PersonWhereUniqueInput!): Person
   deletePeople(where: [PersonWhereUniqueInput!]!): [Person]
+  createOrganization(data: OrganizationCreateInput!): Organization
+  createOrganizations(data: [OrganizationCreateInput!]!): [Organization]
+  updateOrganization(where: OrganizationWhereUniqueInput!, data: OrganizationUpdateInput!): Organization
+  updateOrganizations(data: [OrganizationUpdateArgs!]!): [Organization]
+  deleteOrganization(where: OrganizationWhereUniqueInput!): Organization
+  deleteOrganizations(where: [OrganizationWhereUniqueInput!]!): [Organization]
   endSession: Boolean!
   authenticateUserWithPassword(email: String!, password: String!): UserAuthenticationWithPasswordResult
   createInitialUser(data: CreateInitialUserInput!): UserAuthenticationWithPasswordSuccess!
@@ -841,6 +951,9 @@ type Query {
   person(where: PersonWhereUniqueInput!): Person
   people(where: PersonWhereInput! = {}, orderBy: [PersonOrderByInput!]! = [], take: Int, skip: Int! = 0, cursor: PersonWhereUniqueInput): [Person!]
   peopleCount(where: PersonWhereInput! = {}): Int
+  organization(where: OrganizationWhereUniqueInput!): Organization
+  organizations(where: OrganizationWhereInput! = {}, orderBy: [OrganizationOrderByInput!]! = [], take: Int, skip: Int! = 0, cursor: OrganizationWhereUniqueInput): [Organization!]
+  organizationsCount(where: OrganizationWhereInput! = {}): Int
   keystone: KeystoneMeta!
   authenticatedItem: AuthenticatedItem
 }
@@ -932,11 +1045,6 @@ enum KeystoneAdminUIFieldMetaItemViewFieldMode {
 enum KeystoneAdminUIFieldMetaItemViewFieldPosition {
   form
   sidebar
-}
-
-enum QueryMode {
-  default
-  insensitive
 }
 
 type KeystoneAdminUIFieldGroupMeta {

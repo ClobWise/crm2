@@ -9,7 +9,7 @@ async function main() {
   const app = new Hono();
   const appEnv = parseEnv();
 
-  app.route('*', await makeProxyApp(appEnv));
+  app.route('/', await makeProxyApp(appEnv));
 
   // Print routes for sanity.
   showRoutes(app);

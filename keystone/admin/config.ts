@@ -4,4 +4,4 @@ import { Navigation } from './Navigation';
 
 export const components: AdminConfig['components'] = {
   // Navigation,
-}
+};

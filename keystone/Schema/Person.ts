@@ -80,8 +80,12 @@ export const Person: Lists.Person = list({
           ui: {
             displayMode: 'cards',
             cardFields: ['house', 'street', 'landmark', 'postalCode'],
-            inlineCreate: { fields: ['house', 'street', 'landmark', 'postalCode'] },
-            inlineEdit: { fields: ['house', 'street', 'landmark', 'postalCode'] },
+            inlineCreate: {
+              fields: ['house', 'street', 'landmark', 'postalCode'],
+            },
+            inlineEdit: {
+              fields: ['house', 'street', 'landmark', 'postalCode'],
+            },
           },
         }),
       },

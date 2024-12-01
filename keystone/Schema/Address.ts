@@ -2,6 +2,7 @@ import { list } from '@keystone-6/core';
 import { allowAll } from '@keystone-6/core/access';
 import { relationship, text, virtual } from '@keystone-6/core/fields';
 
+import { Organization } from './Organization';
 import { type Lists } from '.keystone/types';
 
 export const Email: Lists.Email = list({
@@ -24,6 +25,13 @@ export const Email: Lists.Email = list({
         displayMode: 'cards',
         cardFields: ['firstName', 'lastName'],
         inlineConnect: true,
+        hideCreate: true,
+      },
+    }),
+    organization: relationship({
+      ref: 'Organization.emails',
+      many: true,
+      ui: {
         hideCreate: true,
       },
     }),
@@ -55,12 +63,18 @@ export const Phone: Lists.Phone = list({
       ui: {
         displayMode: 'cards',
         cardFields: ['name', 'code'],
-        // hideCreate: true,
         inlineConnect: true,
       },
     }),
     person: relationship({
       ref: 'Person.phones',
+      many: true,
+      ui: {
+        hideCreate: true,
+      },
+    }),
+    organization: relationship({
+      ref: 'Organization.phones',
       many: true,
       ui: {
         hideCreate: true,
@@ -84,6 +98,14 @@ export const Address: Lists.Address = list({
     }),
     person: relationship({
       ref: 'Person.addresses',
+      many: false,
+      ui: {
+        hideCreate: true,
+      },
+    }),
+
+    organization: relationship({
+      ref: 'Organization.addresses',
       many: false,
       ui: {
         hideCreate: true,

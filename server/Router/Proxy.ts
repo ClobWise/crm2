@@ -1,4 +1,4 @@
-import { Hono, type Context } from 'hono';
+import { type Context, Hono } from 'hono';
 
 import type { AppEnv } from '../Env.js';
 
@@ -36,7 +36,6 @@ export async function proxy(
 
   const headers = makeHeaders(c.req.raw.headers);
   const url = makeUrl(c.req.url, target, trim);
-
 
   return fetch(url.toString(), {
     method: c.req.method,
