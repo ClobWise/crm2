@@ -1,6 +1,6 @@
 {
   "name": "@clobwise/crm",
-  "version": "1.0.0",
+  "version": "0.1.0",
   "private": true,
   "scripts": {
     "build": "npm run build:server && npm run build:keystone",
@@ -9,8 +9,9 @@
     "dev": "tsx ./script/dev.ts",
     "dev:server": "dotenvx run -f .env.local -- tsx --watch ./server/Main.ts",
     "dev:keystone": "cd keystone && dotenvx run -f ../.env.local -- keystone dev",
+    "dev:db:migrate": "cd keystone && dotenvx run -f ../.env.local -- keystone prisma migrate dev",
     "dev:format": "prettier --write .",
-    "start:keystone": "cd keystone && keystone start",
+    "start:keystone": "cd keystone && keystone start --with-migrations",
     "start:server": "node ./dist/server/Main.js"
   },
   "dependencies": {

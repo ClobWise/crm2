@@ -1,0 +1,13 @@
+services:
+  app:
+    container_name: crm
+    build:
+      context: .
+      dockerfile: Dockerfile
+    env_file:
+      - ./.env.local
+    environment:
+      - DATABASE_URL=postgresql://postgres:postgres@host.docker.internal:5432/clobwise?schema=public
+    ports:
+      - 4000:4000
+      - 4001:4001

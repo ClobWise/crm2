@@ -6,7 +6,7 @@ ENV NODE_ENV=production
 
 RUN apk update && apk add --no-cache bash supervisor
 
-# Setup supervisord
+# Setup supervisord to run two servers.
 RUN mkdir -p /var/log/supervisor
 COPY script/supervisord.conf .
 
