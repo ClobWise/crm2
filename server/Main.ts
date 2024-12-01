@@ -16,10 +16,14 @@ async function main() {
 
   const url = new URL(appEnv.appHost);
 
+  // The `PORT` environment variable takes precedence
+  // over the port in `APP_HOST`.
+  const port = Number(process.env.PORT || url.port);
+
   serve(
     {
+      port,
       fetch: app.fetch,
-      port: Number(url.port),
     },
     (info) => {
       console.log(`🚀 Server ready at ${info.address}:${info.port}`);

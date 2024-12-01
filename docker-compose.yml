@@ -1,6 +1,6 @@
 services:
   app:
-    container_name: crm
+    container_name: clobwise
     build:
       context: .
       dockerfile: Dockerfile
