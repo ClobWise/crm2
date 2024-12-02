@@ -3,13 +3,17 @@
 ## Docker image building
 
 ```bash
-docker build -t crm .
-docker build --platform linux/amd64 -t crm .
+docker build -t clobwise .
+docker build --platform linux/amd64 -t clobwise .
+
+# Running locally
+docker run --rm --env-file .env.local -p 4000:4000 -p 4001:4001 clobwise
 ```
 
-## App setup
+## Application setup
 
 ```bash
+# Create a new application.
 dokku apps:create clobwise
 ```
 
@@ -27,9 +31,9 @@ dokku postgres:link clobwise-db clobwise
 ### Environment variables
 
 ```bash
-dokku config:set clobwise APP_HOST="http://localhost:4000"
-dokku config:set clobwise API_HOST="http://localhost:4001"
-dokku config:set clobwise SESSION_SECRET="SOME_RANDOM_VALUE"
+dokku config:set --no-restart clobwise APP_HOST="http://localhost:4000"
+dokku config:set --no-restart clobwise API_HOST="http://localhost:4001"
+dokku config:set --no-restart clobwise SESSION_SECRET="SOME_RANDOM_VALUE"
 ```
 
 ### Deployment

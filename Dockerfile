@@ -15,10 +15,13 @@ COPY package.json .
 RUN npm install --omit=dev
 
 # Copy compiled files
-COPY dist ./dist
-COPY server/package.json ./dist
-COPY keystone/schema.prisma ./keystone/
-COPY keystone/.keystone ./keystone/.keystone
+COPY dist dist
+COPY server/package.json dist
+COPY keystone/.keystone keystone/.keystone/
+
+# Keystone migrations and schema
+COPY keystone/schema.* keystone/
+COPY keystone/migrations keystone/migrations
 
 # Generate prisma client
 RUN npx prisma generate --schema keystone/schema.prisma
