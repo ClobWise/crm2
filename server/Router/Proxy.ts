@@ -14,6 +14,7 @@ export async function makeProxyApp(env: AppEnv): Promise<Hono> {
     const payload = await response.text();
     headers.delete('content-encoding');
     headers.delete('content-length');
+    headers.delete('transfer-encoding');
 
     const toSend = new Response(payload, {
       status: response.status,

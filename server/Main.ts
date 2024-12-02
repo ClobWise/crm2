@@ -14,12 +14,9 @@ async function main() {
   // Print routes for sanity.
   showRoutes(app);
 
-  const url = new URL(appEnv.appHost);
-  const port = Number(url.port);
-
   serve(
     {
-      port,
+      port: 4000,
       fetch: app.fetch,
     },
     (info) => {
