@@ -15,10 +15,7 @@ async function main() {
   showRoutes(app);
 
   const url = new URL(appEnv.appHost);
-
-  // The `PORT` environment variable takes precedence
-  // over the port in `APP_HOST`.
-  const port = Number(process.env.PORT || url.port);
+  const port = Number(url.port);
 
   serve(
     {
