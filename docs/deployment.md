@@ -25,7 +25,6 @@ dokku postgres:create clobwise-db --image "postgres" --image-version "16.4"
 
 # Link postgres to clobwise.
 dokku postgres:link clobwise-db clobwise
-
 ```
 
 ### Environment variables

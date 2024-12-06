@@ -1,31 +1,27 @@
-import { type Context, Hono } from 'hono';
+import type { Context } from 'hono';
 
-import type { AppEnv } from '../Env.js';
+export async function proxyBuffer(
+  c: Context,
+  target: string,
+  trim?: RegExp
+): Promise<Response> {
+  const response = await proxy(c, target, trim);
 
-export async function makeProxyApp(env: AppEnv): Promise<Hono> {
-  const app = new Hono();
+  const headers = new Headers(response.headers);
 
-  app.all('*', async (c) => {
-    const response = await proxy(c, env.apiHost);
+  // Buffer response as text and then forward it to the UI.
+  const payload = await response.text();
+  headers.delete('content-encoding');
+  headers.delete('content-length');
+  headers.delete('transfer-encoding');
 
-    const headers = new Headers(response.headers);
-
-    // Buffer response as text and then forward it to the UI.
-    const payload = await response.text();
-    headers.delete('content-encoding');
-    headers.delete('content-length');
-    headers.delete('transfer-encoding');
-
-    const toSend = new Response(payload, {
-      status: response.status,
-      statusText: response.statusText,
-      headers,
-    });
-
-    return toSend;
+  const toSend = new Response(payload, {
+    status: response.status,
+    statusText: response.statusText,
+    headers,
   });
 
-  return app;
+  return toSend;
 }
 
 export async function proxy(
@@ -33,8 +29,6 @@ export async function proxy(
   target: string,
   trim?: RegExp
 ): Promise<Response> {
-  console.log('URL:', c.req.url);
-
   const headers = makeHeaders(c.req.raw.headers);
   const url = makeUrl(c.req.url, target, trim);
 

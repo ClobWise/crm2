@@ -3,13 +3,15 @@ import { Hono } from 'hono';
 import { showRoutes } from 'hono/dev';
 
 import { parseEnv } from './Env.js';
-import { makeProxyApp } from './Router/Proxy.js';
+import { makeKeystoneApp } from './Router/Keystone.js';
+import { makeUIApp } from './Router/UI.js';
 
 async function main() {
   const app = new Hono();
   const appEnv = parseEnv();
 
-  app.route('/', await makeProxyApp(appEnv));
+  app.route('/v2', await makeUIApp(appEnv));
+  app.route('/', await makeKeystoneApp(appEnv));
 
   // Print routes for sanity.
   showRoutes(app);
