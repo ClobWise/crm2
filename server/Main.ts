@@ -1,6 +1,7 @@
 import { serve } from '@hono/node-server';
 import { Hono } from 'hono';
 import { showRoutes } from 'hono/dev';
+import { logger } from 'hono/logger';
 
 import { parseEnv } from './Env.js';
 import { makeKeystoneApp } from './Router/Keystone.js';
@@ -10,6 +11,7 @@ async function main() {
   const app = new Hono();
   const appEnv = parseEnv();
 
+  app.use(logger());
   app.route('/v2', await makeUIApp(appEnv));
   app.route('/', await makeKeystoneApp(appEnv));
 

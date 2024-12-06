@@ -1,15 +1,11 @@
 {
-  "compilerOptions": {
-    "noEmit": true,
-    "module": "NodeNext",
-    "moduleResolution": "NodeNext",
-    "verbatimModuleSyntax": true
-  },
+  "compilerOptions": {},
   "references": [
     { "path": "./keystone/tsconfig.json" },
     { "path": "./server/tsconfig.json" },
     { "path": "./ui/main/tsconfig.json" },
-    { "path": "./ui/public/tsconfig.json" }
+    { "path": "./ui/public/tsconfig.json" },
+    { "path": "./tsconfig.infra.json" }
   ],
   "include": [],
   "files": []

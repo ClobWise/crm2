@@ -3,7 +3,7 @@
   "version": "0.3.2",
   "private": true,
   "scripts": {
-    "build": "npm run build:server && npm run build:keystone",
+    "build": "npm run build:ui && npm run build:server && npm run build:keystone",
     "build:ui": "rsbuild build -c ./ui/rsbuild.config.ts",
     "build:server": "tsc --build ./server/tsconfig.build.json",
     "build:keystone": "cd keystone && keystone build",

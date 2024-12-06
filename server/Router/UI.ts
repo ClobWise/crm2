@@ -1,9 +1,9 @@
 import { Hono, type Context } from 'hono';
 
 import type { AppEnv } from '../Env.js';
-import { makeUrl, proxy, proxyBuffer } from '../Util/Proxy.js';
+import { proxy, proxyBuffer } from '../Util/Proxy.js';
 
-export async function makeUIApp(env: AppEnv): Promise<Hono> {
+export async function makeUIApp(_env: AppEnv): Promise<Hono> {
   return await devServerApp();
 }
 
@@ -11,29 +11,12 @@ async function devServerApp() {
   const UI_HOST = 'http://localhost:4002';
   const app = new Hono();
 
-  const fetchRSBuild = (url: string, incoming: Headers) => {
-    const headers = new Headers(incoming);
-
-    headers.delete('cookie');
-    headers.delete('host');
-
-    return fetch(url, { headers });
-  };
-
   app.get('/:filename{(.+\\..+$)|^@.+}', (c) => {
     return proxyBuffer(c, UI_HOST);
   });
 
-  app.get('/public/*', (c) => {
-    const url = `${UI_HOST}/public.html`;
-
-    return fetchRSBuild(url, c.req.raw.headers);
-  });
-
   app.get('*', async (c) => {
-    const url = makeUrl(c.req.url, UI_HOST);
-
-    const response = await fetchRSBuild(url, c.req.raw.headers);
+    const response = await proxy(c, UI_HOST);
     const content = await response.text();
 
     return serveMain(c, content);
