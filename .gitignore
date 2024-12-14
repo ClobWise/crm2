@@ -4,6 +4,7 @@ node_modules
 keystone.db
 .keystone/
 dist/
+keystone/admin/generated/
 
 .env
 .env.local

@@ -7,15 +7,12 @@ import { logger } from 'hono/logger';
 
 import { parseEnv } from './Env.js';
 
-
 async function main() {
   const app = new Hono();
   const appEnv = parseEnv();
 
   const uiApp = await makeUIApp({
-    url: appEnv.mode === 'development'
-      ? 'http://localhost:4002'
-      : '/dist/ui',
+    url: appEnv.mode === 'development' ? 'http://localhost:4002' : '/dist/ui',
   });
 
   const keystonApp = await makeProxyApp({

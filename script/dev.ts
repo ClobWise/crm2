@@ -5,6 +5,7 @@ async function main() {
     'npm:dev:keystone',
     'npm:dev:ui',
     'npm:dev:server',
+    'npm:dev:lib',
   ]);
 }
 

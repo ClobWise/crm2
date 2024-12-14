@@ -2,16 +2,12 @@
   "extends": "../../config/tsconfig.base.json",
   "compilerOptions": {
     /* modules */
+    "noEmit": false,
     "module": "NodeNext",
     "moduleResolution": "NodeNext",
 
-    "outDir": "../dist/server",
+    "outDir": "../dist/lib",
     "rootDir": "."
   },
-  "include": ["./**/*"],
-  "references": [
-    {
-      "path": "../lib/tsconfig.json"
-    }
-  ]
+  "include": ["**/*"]
 }

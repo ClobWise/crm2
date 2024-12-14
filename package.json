@@ -8,6 +8,7 @@
     "build:server": "tsc --build ./server/tsconfig.build.json",
     "build:keystone": "cd keystone && keystone build",
     "dev": "tsx ./script/dev.ts",
+    "dev:lib": "rslib build -c ./ui/rslib.config.ts --watch",
     "dev:ui": "rsbuild dev -c ./ui/rsbuild.config.ts --open",
     "dev:server": "dotenvx run -f .env.local -- tsx --watch ./server/Main.ts",
     "dev:keystone": "cd keystone && dotenvx run -f ../.env.local -- keystone dev",
@@ -16,6 +17,9 @@
     "preview": "rsbuild preview",
     "start:keystone": "cd keystone && keystone start --with-migrations",
     "start:server": "node ./dist/server/Main.js"
+  },
+  "imports": {
+    "#lib/*": "./ui/lib/*"
   },
   "dependencies": {
     "@hono/node-server": "^1.13.7",
@@ -36,8 +40,10 @@
   },
   "devDependencies": {
     "@dotenvx/dotenvx": "^1.24.2",
+    "@microsoft/api-extractor": "^7.48.1",
     "@rsbuild/core": "^1.1.5",
     "@rsbuild/plugin-react": "^1.0.7",
+    "@rslib/core": "^0.1.4",
     "@trivago/prettier-plugin-sort-imports": "^4.3.0",
     "@types/react": "^18.3.12",
     "@types/react-dom": "^18.3.1",

@@ -5,10 +5,11 @@
     "rootDir": ".",
 
     "module": "NodeNext",
-    "moduleResolution": "NodeNext",
+    "moduleResolution": "NodeNext"
   },
   "include": [
     "./ui/rsbuild.config.ts",
+    "./ui/rslib.config.ts"
     // "./script/**/*",
-  ],
+  ]
 }
