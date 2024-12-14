@@ -30,5 +30,4 @@
     "verbatimModuleSyntax": true
   },
   "include": [],
-  "references": [{ "path": "./tsconfig.node.json" }]
 }

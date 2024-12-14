@@ -26,6 +26,7 @@
     "@tanstack/react-query": "^5.62.2",
     "@tanstack/react-router": "^1.86.0",
     "@webf/anar": "^0.0.1",
+    "@webf/ui-server": "^0.1.0",
     "clsx": "^2.1.1",
     "hono": "^4.6.12",
     "lucide-react": "^0.468.0",
@@ -46,6 +47,6 @@
     "typescript": "^5.7.2"
   },
   "volta": {
-    "node": "22.11.0"
+    "node": "22.12.0"
   }
 }
