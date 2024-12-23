@@ -1,0 +1,38 @@
+.root {
+  display: grid;
+  grid-template-rows: 1fr auto;
+  gap: 0.5rem;
+}
+
+.item {
+  display: flex;
+  padding: 0.75rem 1rem;
+
+  align-items: center;
+  gap: 0.5rem;
+
+  font-weight: 600;
+  text-decoration: none;
+
+  color: var(--color-text);
+
+  &:hover {
+    color: var(--color-text);
+    background-color: var(--button-color-primary-hover);
+  }
+}
+
+.subtitle {
+  margin: 1rem 0 0;
+  padding: 0.75rem 1rem;
+
+  color: var(--color-text-subdued);
+  font-weight: 600;
+  font-size: 14px;
+  text-transform: uppercase;
+}
+
+.userInfo {
+  border-top: 1px solid var(--border-color);
+  padding: 0.75rem 1rem;
+}

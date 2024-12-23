@@ -1,21 +1,23 @@
 import { pluginReact } from '@rsbuild/plugin-react';
 import { defineConfig } from '@rslib/core';
+import { pluginDts } from 'rsbuild-plugin-dts';
 
 export default defineConfig({
   root: './ui',
   source: {
     entry: {
-      library: './ui/lib/Keystone.ts',
+      index: './lib/**',
     },
     tsconfigPath: './ui/lib/tsconfig.json',
   },
   lib: [
     {
-      bundle: true,
+      bundle: false,
+      autoExternal: true,
       dts: {
         autoExtension: true,
         abortOnError: false,
-        bundle: true,
+        bundle: false,
       },
       format: 'esm',
     },
@@ -27,5 +29,10 @@ export default defineConfig({
     },
     target: 'web',
   },
-  plugins: [pluginReact()],
+  plugins: [
+    pluginReact(),
+    pluginDts({
+      bundle: false,
+    }),
+  ],
 });
