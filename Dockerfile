@@ -1,18 +1,20 @@
-FROM node:22.11.0-alpine
+FROM node:22.12.0-alpine
 
 WORKDIR /app
 
 ENV NODE_ENV=production
 
-RUN apk update && apk add --no-cache bash supervisor
+# openssl is requried for prisma
+RUN apk update && apk add --no-cache openssl bash supervisor
 
 # Setup supervisord to run two servers.
 RUN mkdir -p /var/log/supervisor
 COPY script/supervisord.conf .
 
 # Setup npm modules
-COPY package.json .
-RUN npm install --omit=dev
+# RUN npm config set loglevel verbose
+COPY package.json package-lock.json ./
+RUN npm ci --omit=dev
 
 # Copy compiled files
 COPY dist dist

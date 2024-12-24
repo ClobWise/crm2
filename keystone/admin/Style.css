@@ -1,3 +1,15 @@
 aside {
   height: 100%;
+  max-width: 300px;
+
+  /* From keystone */
+  border-right: 1px solid #e1e5e9;
+}
+
+.Logo {
+  width: 120px;
+}
+
+.Navigation {
+  height: 100%;
 }

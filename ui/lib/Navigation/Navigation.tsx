@@ -16,6 +16,7 @@ import {
 } from './NavigationItem.js';
 import { UserInfo } from './UserInfo.js';
 
+
 export type NavigationProps = {
   className?: string;
   link: (props: ExternalLinkProps) => React.ReactNode;
@@ -28,7 +29,7 @@ export function Navigation(props: NavigationProps) {
 
   return (
     <nav className={clsx('Navigation', style.root, className)}>
-      <div>
+      <div className={style.scrollArea}>
         <NavigationItem
           component={Link}
           href='/'

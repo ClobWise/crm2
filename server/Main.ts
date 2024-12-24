@@ -12,7 +12,8 @@ async function main() {
   const appEnv = parseEnv();
 
   const uiApp = await makeUIApp({
-    url: appEnv.mode === 'development' ? 'http://localhost:4002' : '/dist/ui',
+    url: appEnv.mode === 'development' ? 'http://localhost:4002' : './dist/ui',
+    index: 'main.html',
   });
 
   const keystonApp = await makeProxyApp({
